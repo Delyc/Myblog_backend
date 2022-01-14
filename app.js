@@ -16,12 +16,16 @@ app.use(cors());
 const port = process.env.PORT || "3001";
 
 import userRouter from "./routes/users.js";
+import articleRouter from "./routes/articles.js";
+import queryRouter from "./routes/queries.js";
 
 app.get("/", (req, res) => {
   res.send("Blog API running!");
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/articles", articleRouter);
+app.use("/api/queries", queryRouter);
 
 app.listen(port, () => {
   console.log(`API Running on Port ${port}`);

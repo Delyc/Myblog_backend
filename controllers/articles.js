@@ -1,42 +1,80 @@
 import pkg from "http-errors";
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
 
-import { User } from "../models/article.js";
+import { Article } from "../models/article.js";
 
-export const getUserById = async (req, res) => {
+// get one article by id
+export const getArticleById = async (req, res) => {
   if (!req.params.id) {
-    throw new BadRequest("Missing user id");
+    throw new BadRequest("Missing article id");
   }
 
   const id = req.params.id;
-  const user = await User.findById(id);
+  const article = await Article.findById(id);
 
-  if (!user) {
-    throw new BadRequest("no user exist for this id");
+  if (!article) {
+    throw new BadRequest("no article exist for this id");
   }
-  res.status(200).send(user);
+  res.status(200).send(article);
 };
 
-export const createUser = async (req, res) => {
-  const email = req.body.email;
+// create a new article
+export const createArticle = async (req, res) => {
+  const title = req.body.title;
 
-  const existingUser = await User.findOne({ email: email });
+  const existingArticle = await Article.findOne({ title: title });
 
-  if (existingUser) {
+  if (existingArticle) {
     return res.status(400).json({
       success: false,
-      message: "A user with this email already exist",
+      message: "An article with this title already exist",
     });
   }
 
+  // create article using req.body
   try {
-    const user = await User.create(req.body);
-    res.status(201).json({ success: true, data: user });
+    const article = await Article.create(req.body);
+    res.status(201).json({ success: true, data: article });
   } catch (error) {
-    console.log(err);
+    console.log(error);
     res.status(500).json({
       success: false,
       message: "Something is wrong...",
     });
   }
+};
+
+// view all articles
+export const viewAllArticles = async (req, res) => {
+  const articles = await Article.find();
+  res.status(200).send(articles);
+};
+
+// update an article
+export const updateArticle = async (req, res) => {
+  const id = req.params.id;
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw new NotFound("No article found");
+  }
+
+  const updatedArticle = await Article.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  res.status(200).send(updatedArticle);
+};
+
+// delete an article
+export const deleteArticle = async (req, res) => {
+  const id = req.params.id;
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw new NotFound("No article found");
+  }
+
+  await Article.findByIdAndDelete(id);
+  res.status(200).send({ message: "Article deleted successfully" });
 };

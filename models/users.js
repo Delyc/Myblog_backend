@@ -5,10 +5,12 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: true,
+      minlength: 5,
     },
     secondName: {
       type: String,
       required: true,
+      minlength: 5,
     },
     email: {
       type: String,
@@ -19,7 +21,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
+      minlength: 8,
     },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }

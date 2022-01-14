@@ -3,6 +3,7 @@ const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
 
 import { User } from "../models/users.js";
 
+// get one user by id
 export const getUserById = async (req, res) => {
   if (!req.params.id) {
     throw new BadRequest("Missing user id");
@@ -17,6 +18,7 @@ export const getUserById = async (req, res) => {
   res.status(200).send(user);
 };
 
+// create a new user
 export const createUser = async (req, res) => {
   const email = req.body.email;
 
@@ -39,4 +41,67 @@ export const createUser = async (req, res) => {
       message: "Something is wrong...",
     });
   }
+};
+
+// fetch all users
+export const getAllUsers = async (req, res) => {
+  const users = await User.find();
+  res.status(200).send(users);
+};
+
+// update a user
+export const updateUser = async (req, res) => {
+  const id = req.params.id;
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new NotFound("no user exist for this id");
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  res.status(200).send(updatedUser);
+};
+
+// delete a user
+export const deleteUser = async (req, res) => {
+  const id = req.params.id;
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    throw new NotFound("no user exist for this id");
+  }
+
+  await User.findByIdAndDelete(id);
+
+  res.status(200).json({
+    success: true,
+    message: `user with id ${id} deleted`,
+  });
+};
+
+// login a user
+export const loginUser = async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const user = await User.findOne({ email: email });
+
+  if (!user) {
+    throw new Unauthorized("no user exist for this email");
+  }
+
+  if (user.password !== password) {
+    throw new Unauthorized("wrong password");
+  }
+
+  // send json response
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
 };
