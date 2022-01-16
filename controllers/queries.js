@@ -47,3 +47,14 @@ export const GetAllQueries = async (req, res) => {
   const queries = await Queries.find();
   res.status(200).send(queries);
 };
+
+// search queries
+export const SearchQueries = async (req, res) => {
+  const queries = await Queries.find({
+    $text: { $search: req.query.q },
+  });
+  res.status(200).json({
+    success: true,
+    data: queries,
+  });
+};

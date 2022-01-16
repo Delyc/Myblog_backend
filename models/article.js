@@ -20,11 +20,17 @@ const ArticleSchema = new mongoose.Schema(
     },
     banner: {
       type: String,
-      required: true,
+      required: [true, 'banner required']
     },
     images: {
       type: Array,
       required: true,
+    },
+    comments: {
+      type: Array,
+    },
+    likes: {
+      type: Array,
     },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }

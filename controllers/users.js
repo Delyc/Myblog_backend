@@ -35,10 +35,10 @@ export const createUser = async (req, res) => {
     const user = await User.create(req.body);
     res.status(201).json({ success: true, data: user });
   } catch (error) {
-    console.log(err);
+    console.log(error);
     res.status(500).json({
       success: false,
-      message: "Something is wrong...",
+      message: error.message,
     });
   }
 };
@@ -104,4 +104,29 @@ export const loginUser = async (req, res) => {
     success: true,
     data: user,
   });
+};
+
+// search for a user using firstName
+export const searchUser = async (req, res) => {
+  const search = req.params.search;
+  try {
+    // find all users with firstName that contains search - case insensitive
+    const users = await User.find({ firstName: { $regex: search, $options: "i" } });
+    // const users = await User.find({ firstName: search });
+    if (users.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "no user found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };

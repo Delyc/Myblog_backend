@@ -78,3 +78,130 @@ export const deleteArticle = async (req, res) => {
   await Article.findByIdAndDelete(id);
   res.status(200).send({ message: "Article deleted successfully" });
 };
+
+// search for a user using firstName
+export const searchArticle = async (req, res) => {
+  const search = req.params.search;
+  try {
+    // find all users with firstName that contains search - case insensitive
+    const articles = await Article.find({ title: { $regex: search, $options: "i" } });
+    // const users = await User.find({ firstName: search });
+    if (articles.length === 0) {
+      res.status(404).json({
+        success: false,
+        message: "no user found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: articles,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+// add comment to an article
+export const addComment = async (req, res) => {
+  const id = req.params.id;
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw new NotFound("No article found");
+  }
+
+  const updatedArticle = await Article.findByIdAndUpdate(id, {
+    $push: { comments: req.body },
+  });
+
+  res.status(200).json({
+    success: true,
+    data: updatedArticle,
+  });
+};
+
+// delete comment of an article using user id in the comment object
+export const deleteComment = async (req, res) => {
+  const id = req.params.id;
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw new NotFound("No article found");
+  }
+
+  const updatedArticle = await Article.findByIdAndUpdate(
+    id,
+    {
+      $pull: { comments: { user: req.body.user } },
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    success: true,
+    data: updatedArticle,
+  });
+};
+
+// get all comments of an article
+export const getComments = async (req, res) => {
+  const id = req.params.id;
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw new NotFound("No article found");
+  }
+
+  res.status(200).json({
+    success: true,
+    data: article.comments,
+    count: article.comments.length,
+  });
+};
+
+// like an article, if user liked the article, unlike it otherwise like it
+export const likeArticle = async (req, res) => {
+  const id = req.params.id;
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw new NotFound("No article found");
+  }
+
+  const user = req.body.user;
+  const userLiked = article.likes.find((like) => like.user === user);
+
+  if (userLiked) {
+    await Article.findByIdAndUpdate(id, {
+      $pull: { likes: { user: user } },
+    });
+  } else {
+    await Article.findByIdAndUpdate(id, {
+      $push: { likes: req.body },
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: article,
+  });
+}
+
+// get all likes of an article
+export const getLikes = async (req, res) => {
+  const id = req.params.id;
+  const article = await Article.findById(id);
+
+  if (!article) {
+    throw new NotFound("No article found");
+  }
+
+  res.status(200).json({
+    success: true,
+    data: article.likes,
+    count: article.likes.length,
+  });
+};
+

@@ -8,6 +8,7 @@ import {
   deleteUser,
   loginUser,
   updateUser,
+  searchUser,
 } from "../controllers/users.js";
 
 userRouter.route("/:id").get(getUserById);
@@ -16,5 +17,6 @@ userRouter.route("/").get(getAllUsers);
 userRouter.route("/:id").delete(deleteUser);
 userRouter.route("/login").post(loginUser);
 userRouter.route("/:id").put(updateUser);
+userRouter.route("/search/:search").get(searchUser);
 
 export default userRouter;
