@@ -16,10 +16,59 @@ import {
   getLikes,
 } from "../controllers/articles.js";
 
+/**
+ * @openapi
+ * components:
+ *  securitySchemes:
+ *    Token:
+ *      type: http
+ *      scheme: Bearer
+ *
+ */
 // create routes
 
+/**
+ * @openapi
+ * /api/articles:
+ *  post:
+ *    security:
+ *      - Token: []
+ *    summary: Aloow a user to create a post
+ *
+ */
+
 articleRouter.post("/", authenticate, createArticle);
+
+/**
+ * @openapi
+ * /api/articles/{id}:
+ *  get:
+ *    summary: Allow to get an article by using its ID
+ *    description: Allow............
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description: A valid mongo db id
+ *    responses:
+ *      200:
+ *        description: An article is returned
+ *      404:
+ *        description: artcile doesnot exist
+ *
+ *
+ */
+
 articleRouter.get("/:id", getArticleById);
+/**
+ * @openapi
+ * /api/articles:
+ *  get:
+ *    summary: Get a list of all articles
+ *    responses:
+ *      200:
+ *        description: A list of all posts.
+ */
 articleRouter.get("/", viewAllArticles);
 articleRouter.put("/:id", authenticate, updateArticle);
 articleRouter.delete("/:id", authenticate, deleteArticle);
@@ -29,7 +78,6 @@ articleRouter.delete("/:id/comments/:user", authenticate, deleteComment);
 articleRouter.get("/:id/comments", getComments);
 articleRouter.post("/:id/likes", likeArticle);
 articleRouter.get("/:id/likes", getLikes);
-
 
 // articleRouter.route("/").post(createArticle);
 // articleRouter.route("/:id").get(getArticleById);

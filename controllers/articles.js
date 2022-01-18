@@ -1,19 +1,24 @@
 import pkg from "http-errors";
+import mongoose from "mongoose";
+const Mongoose = mongoose;
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
 
 import { Article } from "../models/article.js";
 
 // get one article by id
 export const getArticleById = async (req, res) => {
-  if (!req.params.id) {
-    throw new BadRequest("Missing article id");
+  if (!req.params.id || !Mongoose.isValidObjectId(req.params.id)) {
+    // throw new BadRequest("Missing article id");
+    return res.sendStatus(404);
   }
 
   const id = req.params.id;
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new BadRequest("no article exist for this id");
+    return res.sendStatus(404);
+
+    // throw new BadRequest("no article exist for this id");
   }
   res.status(200).send(article);
 };
@@ -84,7 +89,9 @@ export const searchArticle = async (req, res) => {
   const search = req.params.search;
   try {
     // find all users with firstName that contains search - case insensitive
-    const articles = await Article.find({ title: { $regex: search, $options: "i" } });
+    const articles = await Article.find({
+      title: { $regex: search, $options: "i" },
+    });
     // const users = await User.find({ firstName: search });
     if (articles.length === 0) {
       res.status(404).json({
@@ -187,7 +194,7 @@ export const likeArticle = async (req, res) => {
     success: true,
     data: article,
   });
-}
+};
 
 // get all likes of an article
 export const getLikes = async (req, res) => {
@@ -204,4 +211,3 @@ export const getLikes = async (req, res) => {
     count: article.likes.length,
   });
 };
-

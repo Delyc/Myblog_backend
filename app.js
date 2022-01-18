@@ -6,11 +6,11 @@ import mongoose from "mongoose";
 
 const app = express();
 
+app.use(cors());
 dotenv.config();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
 
 // app.use(function(err, req, res, next){
 //   res.status(422).send({error: err.message});
@@ -18,13 +18,17 @@ app.use(cors());
 // app.use(router);
 
 const port = process.env.PORT || "3001";
-
+import swaggerUi from "swagger-ui-express";
 import userRouter from "./routes/users.js";
 import articleRouter from "./routes/articles.js";
 import queryRouter from "./routes/queries.js";
+import { swaggeroptions } from "./config/base.js";
+import swaggerJSDoc from "swagger-jsdoc";
+const swaggerOptionsUi = swaggerJSDoc(swaggeroptions);
+app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerOptionsUi));
 
 app.get("/", (req, res) => {
-  res.send("Blog API running!");
+  res.send("Welcome!");
 });
 
 app.use("/api/users", userRouter);
