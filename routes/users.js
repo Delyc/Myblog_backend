@@ -50,7 +50,10 @@ userRouter.delete("/:id", authenticate, deleteUser);
  * /api/users:
  *  post:
  *    summary: login
+<<<<<<< HEAD
  *    tags:[User]
+=======
+>>>>>>> c576eb8a19629d6add335bf7c506832e0a27e28f
  *    description: user login
  *    requestBody:
  *      required: true
