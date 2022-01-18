@@ -18,7 +18,7 @@ import {
 
 // create routes
 
-articleRouter.post("/", authenticate, createArticle);
+articleRouter.post("/", createArticle);
 articleRouter.get("/:id", getArticleById);
 articleRouter.get("/", viewAllArticles);
 articleRouter.put("/:id", authenticate, updateArticle);

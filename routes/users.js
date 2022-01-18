@@ -14,7 +14,7 @@ import {
 
 // userRouter.route("/:id").get(getUserById);
 userRouter.get("/:id", getUserById);
-userRouter.post("/", authenticate, createUser);
+userRouter.post("/", createUser);
 userRouter.get("/",  getAllUsers);
 userRouter.delete("/:id", authenticate, deleteUser);
 userRouter.post("/login", loginUser);

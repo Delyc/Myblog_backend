@@ -2,6 +2,7 @@ import pkg from "http-errors";
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
 
 import { Article } from "../models/article.js";
+// import { uploadPhoto } from "../utilities/util.js";
 
 // get one article by id
 export const getArticleById = async (req, res) => {
@@ -34,15 +35,48 @@ export const createArticle = async (req, res) => {
   // create article using req.body
   try {
     const article = await Article.create(req.body);
+    // upload 
     res.status(201).json({ success: true, data: article });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Something is wrong...",
+      message: error.message,
     });
   }
 };
+
+//uploading image
+const uploadDishPhoto = async (req, res) => {
+  if (!req.params.id) {
+	return res.status(400).json({ 
+    success: false, message: "Provide article id"});
+  };
+
+  const allResults = [];
+  for (let file of req.files) {
+	const result = await uploadPhoto(file, options);
+	allResults.push({
+  	url: result.url,
+  	publicId: result.public_id,
+	});
+  }
+  await Article.findByIdAndUpdate(
+	req.params.id,
+	{
+  	$push: {
+    	images: {
+      	$each: allResults,
+    	},
+  	},
+	},
+	{
+  	new: true,
+	}
+  );
+  res.status(200).json({ success: true, data: allResults });
+};
+
 
 // view all articles
 export const viewAllArticles = async (req, res) => {
