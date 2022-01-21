@@ -61,7 +61,8 @@ export const updateArticle = async (req, res) => {
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new NotFound("No article found");
+    return res.sendStatus(404);
+    // throw new NotFound("No article found");
   }
 
   const updatedArticle = await Article.findByIdAndUpdate(id, req.body, {
@@ -77,7 +78,8 @@ export const deleteArticle = async (req, res) => {
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new NotFound("No article found");
+    return res.sendStatus(404);
+    // throw new NotFound("No article found");
   }
 
   await Article.findByIdAndDelete(id);
@@ -96,7 +98,7 @@ export const searchArticle = async (req, res) => {
     if (articles.length === 0) {
       res.status(404).json({
         success: false,
-        message: "no user found",
+        message: "not found",
       });
     }
     res.status(200).json({
@@ -116,7 +118,8 @@ export const addComment = async (req, res) => {
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new NotFound("No article found");
+    return res.sendStatus(404);
+    // throw new NotFound("No article found");
   }
 
   const updatedArticle = await Article.findByIdAndUpdate(id, {
@@ -135,7 +138,8 @@ export const deleteComment = async (req, res) => {
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new NotFound("No article found");
+    return res.sendStatus(404);
+    // throw new NotFound("No article found");
   }
 
   const updatedArticle = await Article.findByIdAndUpdate(
@@ -158,7 +162,8 @@ export const getComments = async (req, res) => {
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new NotFound("No article found");
+    return res.sendStatus(404);
+    // throw new NotFound("No article found");
   }
 
   res.status(200).json({
@@ -174,7 +179,8 @@ export const likeArticle = async (req, res) => {
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new NotFound("No article found");
+    return res.sendStatus(404);
+    // throw new NotFound("No article found");
   }
 
   const user = req.body.user;
@@ -202,7 +208,7 @@ export const getLikes = async (req, res) => {
   const article = await Article.findById(id);
 
   if (!article) {
-    throw new NotFound("No article found");
+    // throw new NotFound("No article found");
   }
 
   res.status(200).json({

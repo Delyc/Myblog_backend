@@ -70,6 +70,26 @@ articleRouter.get("/:id", getArticleById);
  *        description: A list of all posts.
  */
 articleRouter.get("/", viewAllArticles);
+
+/**
+ * @openapi
+ * /api/articles/{id}:
+ * put:
+ *   summary: update article
+ *   descrption: updating
+ *   parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        description:  a valid article id
+ *   response:
+ *      200:
+ *        description:An article is returned
+ *      404:
+ *        description:  article doesnot exist
+ */
+
+
 articleRouter.put("/:id", authenticate, updateArticle);
 articleRouter.delete("/:id", authenticate, deleteArticle);
 articleRouter.get("/search/:search", searchArticle);

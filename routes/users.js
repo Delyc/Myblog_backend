@@ -14,7 +14,7 @@ import {
 
 // userRouter.route("/:id").get(getUserById);
 userRouter.get("/:id", getUserById);
-userRouter.post("/", authenticate, createUser);
+userRouter.post("/", createUser);
 userRouter.get("/", getAllUsers);
 userRouter.delete("/:id", authenticate, deleteUser);
 /**
@@ -50,10 +50,8 @@ userRouter.delete("/:id", authenticate, deleteUser);
  * /api/users:
  *  post:
  *    summary: login
-<<<<<<< HEAD
- *    tags:[User]
-=======
->>>>>>> c576eb8a19629d6add335bf7c506832e0a27e28f
+ *    tags:
+ *      - User
  *    description: user login
  *    requestBody:
  *      required: true
@@ -84,6 +82,8 @@ userRouter.post("/login", loginUser);
  * @openapi
  * /api/users/{id}:
  *   put:
+ *    security:
+ *      - Token: []
  *    summary: Update a user
  *    tags:
  *      - User
@@ -96,8 +96,13 @@ userRouter.post("/login", loginUser);
  *        application/json:
  *          schema:
  *            properties:
- *               email:
+ *               firstName:
  *                  type: string
+ *            example:
+ *                firstName: Delyce
+ *    responses:
+ *       200:
+ *          description: return an updated user
  */
 userRouter.put("/:id", authenticate, updateUser);
 userRouter.get("/search/:search", searchUser);

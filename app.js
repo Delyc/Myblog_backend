@@ -35,6 +35,9 @@ app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/queries", queryRouter);
 
+app.all("*", (req, res)=>{
+  return res.sendStatus(404)
+})
 app.listen(port, () => {
   console.log(`API Running on Port ${port}`);
 });
