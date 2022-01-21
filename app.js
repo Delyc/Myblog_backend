@@ -22,6 +22,7 @@ import swaggerUi from "swagger-ui-express";
 import userRouter from "./routes/users.js";
 import articleRouter from "./routes/articles.js";
 import queryRouter from "./routes/queries.js";
+import hireRouter from "./routes/hireme.js"
 import { swaggeroptions } from "./config/base.js";
 import swaggerJSDoc from "swagger-jsdoc";
 const swaggerOptionsUi = swaggerJSDoc(swaggeroptions);
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/queries", queryRouter);
+app.use("/api/hireme", hireRouter);
 
 app.all("*", (req, res)=>{
   return res.sendStatus(404)

@@ -2,6 +2,16 @@ import mongoose from "mongoose";
 
 const QueriesSchema = new mongoose.Schema(
   {
+    fullname: {
+      type: String,
+    
+      required: true,
+    },
+    email: {
+      type: String,
+      
+      required: true,
+    },
     message: {
       type: String,
       minlength: 10,
