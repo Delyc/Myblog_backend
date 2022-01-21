@@ -8,14 +8,16 @@ import { User } from "../models/users.js";
 // get one user by id
 export const getUserById = async (req, res) => {
   if (!req.params.id) {
-    throw new BadRequest("Missing user id");
+    return res.status(404).json({success: false, message : "Oops, missing user id"});
+   
   }
 
   const id = req.params.id;
   const user = await User.findById(id);
 
   if (!user) {
-    throw new BadRequest("no user exist for this id");
+    return res.status(404).json({success: false, message : "no user exists for this id"});
+ 
   }
   res.status(200).send(user);
 };
@@ -35,12 +37,12 @@ export const createUser = async (req, res) => {
 
   try {
     const user = await User.create(req.body);
-    res.status(201).json({ success: true, data: user });
+    res.status(201).json({ success: true, message: "Account successfully created" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
+    res.status(404).json({
       success: false,
-      message: error.message,
+      message: "fillin all fields properly",
     });
   }
 };
@@ -66,7 +68,7 @@ export const updateUser = async (req, res) => {
     new: true,
   });
 
-  return res.status(200).json(updatedUser);
+  return res.status(200).json({success: true, message: "you have successfully updated your information"});
 };
 
 // delete a user
@@ -76,7 +78,8 @@ export const deleteUser = async (req, res) => {
   const user = await User.findById(id);
 
   if (!user) {
-    throw new NotFound("no user exist for this id");
+    return res.status(404).json({message : "no user exist for this id"})
+    
   }
 
   await User.findByIdAndDelete(id);
