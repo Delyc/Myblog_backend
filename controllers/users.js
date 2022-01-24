@@ -8,16 +8,18 @@ import { User } from "../models/users.js";
 // get one user by id
 export const getUserById = async (req, res) => {
   if (!req.params.id) {
-    return res.status(404).json({success: false, message : "Oops, missing user id"});
-   
+    return res
+      .status(404)
+      .json({ success: false, message: "Oops, missing user id" });
   }
 
   const id = req.params.id;
   const user = await User.findById(id);
 
   if (!user) {
-    return res.status(404).json({success: false, message : "no user exists for this id"});
- 
+    return res
+      .status(404)
+      .json({ success: false, message: "no user exists for this id" });
   }
   res.status(200).send(user);
 };
@@ -37,12 +39,15 @@ export const createUser = async (req, res) => {
 
   try {
     const user = await User.create(req.body);
-    res.status(201).json({ success: true, message: "Account successfully created" });
+    res
+      .status(201)
+      .json({ success: true, message: "Account successfully created" });
   } catch (error) {
     console.log(error);
+    
     res.status(404).json({
       success: false,
-      message: "fillin all fields properly",
+      message: error.properties,
     });
   }
 };
@@ -56,6 +61,9 @@ export const getAllUsers = async (req, res) => {
 // update a user
 export const updateUser = async (req, res) => {
   const id = req.params.id;
+  if (!id) {
+    return res.status(400).json({ message: "No such id exists" });
+  }
 
   const user = await User.findById(id);
 
@@ -68,7 +76,12 @@ export const updateUser = async (req, res) => {
     new: true,
   });
 
-  return res.status(200).json({success: true, message: "you have successfully updated your information"});
+  return res
+    .status(200)
+    .json({
+      success: true,
+      message: "you have successfully updated your information",
+    });
 };
 
 // delete a user
@@ -78,8 +91,7 @@ export const deleteUser = async (req, res) => {
   const user = await User.findById(id);
 
   if (!user) {
-    return res.status(404).json({message : "no user exist for this id"})
-    
+    return res.status(404).json({ message: "no user exist for this id" });
   }
 
   await User.findByIdAndDelete(id);

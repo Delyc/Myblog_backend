@@ -96,17 +96,17 @@ export const searchArticle = async (req, res) => {
     });
     // const users = await User.find({ firstName: search });
     if (articles.length === 0) {
-      res.status(404).json({
+      return res.status(404).json({
         success: false,
         message: "not found",
       });
     }
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: articles,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: error.message,
     });

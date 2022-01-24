@@ -35,5 +35,6 @@ const ArticleSchema = new mongoose.Schema(
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+ArticleSchema.index({title: 'text'})
 
 export const Article = mongoose.model("Articles", ArticleSchema);
