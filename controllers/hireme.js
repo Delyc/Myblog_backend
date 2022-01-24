@@ -1,7 +1,7 @@
 import pkg from "http-errors";
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
 
-import { hire } from "../models/Hireme.js";
+import { hire } from "../models/hireme.js";
 
 // create a query
 export const hireMe = async (req, res) => {
