@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/queries", queryRouter);
-// app.use("/api/hireme", hireRouter);
+app.use("/api/hireme", hireRouter);
 
 app.all("*", (req, res)=>{
   return res.sendStatus(404)

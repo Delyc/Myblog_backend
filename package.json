@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc --reporter=html --reporter=text mocha --timeout 50000 --coverage --all --exit",
     "start": "node app.js",
     "dev": "nodemon ./app"
   },
@@ -17,12 +17,14 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^4.3.4",
     "cloudinary": "^1.28.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
+    "mocha": "^9.2.0",
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.6",
     "mysql2": "^2.2.5",
@@ -33,6 +35,9 @@
     "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "coverage": "^0.4.1",
+    "coveralls": "^3.1.1",
+    "nodemon": "^2.0.15",
+    "nyc": "^15.1.0"
   }
 }

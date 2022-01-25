@@ -10,8 +10,14 @@ export const swaggeroptions = {
 
         },
         servers: [
-            {url: "http://localhost:5000",
-        name: "Localhost"}
+            {
+                url: "http://localhost:5000",
+                name: "Localhost"
+            },
+        {
+            url: "https://portifolio-website.herokuapp.com/",
+            name: "herokuapp"
+        }
         ]
     },
     apis: [
