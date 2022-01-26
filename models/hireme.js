@@ -1,24 +1,26 @@
 import mongoose from "mongoose";
 
-const QueriesSchema = new mongoose.Schema(
+const HireSchema = new mongoose.Schema(
   {
-    fullname: {
+    name: {
       type: String,
-    
       required: true,
+      
+      
     },
     email: {
       type: String,
+      required: true,
       
-      required: true,
     },
-    message: {
+    job: {
       type: String,
-      minlength: 10,
       required: true,
+      minlength: 50,
     },
+
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-export const Queries = mongoose.model("Queries", QueriesSchema);
+export const hire = mongoose.model("hireme", HireSchema);
