@@ -1,5 +1,7 @@
 import pkg from "http-errors";
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 import { User } from "../models/users.js";
 
@@ -92,17 +94,28 @@ export const loginUser = async (req, res) => {
   const user = await User.findOne({ email: email });
 
   if (!user) {
-    throw new Unauthorized("no user exist for this email");
+    return res.status(401).json({
+      success: false,
+      message: "Wrong email"
+    })
   }
 
   if (user.password !== password) {
-    throw new Unauthorized("wrong password");
+    return res.status(401).json({
+      success: false,
+      message: "Wrong password"
+    })
+    
   }
+
+  // generating token
+  let authToken = jwt.sign({email : user.email, id: user._id}, process.env.AUTH_KEY, {expiresIn : "1h"});
 
   // send json response
   res.status(200).json({
     success: true,
     data: user,
+    token: authToken
   });
 };
 
