@@ -10,7 +10,7 @@ export const getUserById = async (req, res) => {
   if (!req.params.id) {
     return res
       .status(404)
-      .json({ success: false, message: "Oops, missing user id" });
+      .json({ success: false, error: "Oops, missing user id" });
   }
 
   const id = req.params.id;
@@ -19,7 +19,7 @@ export const getUserById = async (req, res) => {
   if (!user) {
     return res
       .status(404)
-      .json({ success: false, message: "no user exists for this id" });
+      .json({ success: false, Data: "no user exists for this id" });
   }
   res.status(200).send(user);
 };
@@ -31,9 +31,9 @@ export const createUser = async (req, res) => {
   const existingUser = await User.findOne({ email: email });
 
   if (existingUser) {
-    return res.status(400).json({
+    return res.status(409).json({
       success: false,
-      message: "A user with this email already exist",
+      Data: "A user with this email already exist",
     });
   }
 
@@ -41,7 +41,7 @@ export const createUser = async (req, res) => {
     const user = await User.create(req.body);
     res
       .status(201)
-      .json({ success: true, message: "Account successfully created" });
+      .json({ success: true, Data: "Account successfully created" });
   } catch (error) {
     console.log(error);
     
@@ -62,13 +62,13 @@ export const getAllUsers = async (req, res) => {
 export const updateUser = async (req, res) => {
   const id = req.params.id;
   if (!id) {
-    return res.status(400).json({ message: "No such id exists" });
+    return res.status(400).json({ Data: "Authentication failed" });
   }
 
   const user = await User.findById(id);
 
   if (!user) {
-    return res.status(404).json({ message: "not found" });
+    return res.status(404).json({ Data: "not found" });
     // throw new NotFound("no user exist for this id");
   }
 
@@ -80,7 +80,7 @@ export const updateUser = async (req, res) => {
     .status(200)
     .json({
       success: true,
-      message: "you have successfully updated your information",
+      Data: "you have successfully updated your information",
     });
 };
 
@@ -91,14 +91,14 @@ export const deleteUser = async (req, res) => {
   const user = await User.findById(id);
 
   if (!user) {
-    return res.status(404).json({ message: "no user exist for this id" });
+    return res.status(404).json({ Data: "not found" });
   }
 
   await User.findByIdAndDelete(id);
 
   res.status(200).json({
     success: true,
-    message: `user with id ${id} deleted`,
+    Data: "user deleted",
   });
 };
 
@@ -123,6 +123,7 @@ export const loginUser = async (req, res) => {
     });
   }
 
+
   // generating token
   let authToken = jwt.sign(
     { email: user.email, id: user._id },
@@ -130,10 +131,16 @@ export const loginUser = async (req, res) => {
     { expiresIn: "1h" }
   );
 
+  const sendBack = {
+    'firstName' : user.firstName,
+    'secondName' : user.secondName,
+    'email' : user.email
+  }
+
   // send json response
   res.status(200).json({
     success: true,
-    data: user,
+    data: sendBack, 
     token: authToken,
   });
 };
@@ -155,12 +162,12 @@ export const searchUser = async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      data: users,
+      data: user.firstName,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message,
+      error: error.message,
     });
   }
 };
