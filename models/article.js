@@ -22,10 +22,7 @@ const ArticleSchema = new mongoose.Schema(
       type: String,
       required: [true, 'banner required']
     },
-    images: {
-      type: Array,
-      required: true,
-    },
+  
     comments: {
       type: Array,
     },

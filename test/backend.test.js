@@ -1,215 +1,267 @@
-import chai, { expect } from 'chai'
-import app from '../app.js'
+import chai, {
+    expect
+} from "chai";
+import chaiHttp from "chai-http";
+import app from "../app.js";
+
+chai.use(chaiHttp);
 chai.should();
 
-describe('1)  Dashboard test', () => {
-
-    //testing get all blogs
-    it('it should GET  posts', (done) => {
-      chai.request(app)
-      .get('/api/articles')
-      .end((err, res) => {
-            res.should.have.status(200);
-        done();
-      });
-    }) 
-
-    //testing get one blog
-
-    it('it should GET one post by id', (done) => {
-        chai.request(app)
-        .get('/api/articles/61ed7d6a130620cc47e63699')
-        .end((err, res) => {
-              res.should.have.status(200);
-          done();
-        });
-      }) 
-
-
-    //testing creating article
-
-
-    it('Created new article', (done) => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRAZ21haWwuY29tIiwiaWQiOiI2MWUyODU5ZWVjOWFkZGE2ZGExOGNhNzQiLCJpYXQiOjE2NDMxMTY1MTgsImV4cCI6MTY0MzEyMDExOH0.j8qWDdt2seLAPOs0tgtVdUpUPqBx1eXSZSP4S6i-JSo"
-        chai.request(app).post('/api/articles')
-          .set({ 'token': token, Accept: 'application/json' })
-          .send({
-       
-            title: "hellohhhhhhhhhhhhhhhhhhhhhhhhhhh",
-            hook: "hi hi hi hi hihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-            content: "hhhwhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-            banner: "hhhhhhhhhhhhhhhhhh",
-            images: "hhhhhhhhhh",
-           
-          })
-          .then((res) => {
-            const body = res.body;
-            expect(body).to.contain.property('data');
-            expect(body).to.contain.property('message');
-            done();
-          })
-          .catch((err) => done(err))
-      })
-  
-    //testing update article
-
-    it('post update', (done) => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRAZ21haWwuY29tIiwiaWQiOiI2MWUyODU5ZWVjOWFkZGE2ZGExOGNhNzQiLCJpYXQiOjE2NDMxMTY1MTgsImV4cCI6MTY0MzEyMDExOH0.j8qWDdt2seLAPOs0tgtVdUpUPqBx1eXSZSP4S6i-JSo"
-        
-          .set({ 'token': token, Accept: 'application/json' })
-          .send({
-            id: "61ed7d6a130620cc47e63699",
-            title: "hellohhhhhh world",
-            hook: "hi hi hi hi hihhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-            content: "hhhwhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-            banner: "hhhhhhhhhhhhhhhhhh",
-            images: "hhhhhhhhhh",
-           
-          })
-          .then((res) => {
-            const body = res.body;
-            expect(body).to.contain.property('success');
-            done();
-          })
-          .catch((err) => done(err))
-      })
-
-  //hire me 
-
-      it('hire me', (done) => {
-        chai.request(app).post('/api/hireme')
-          .set({ 'token': token, Accept: 'application/json' })
-          .send({
-       
-            name: "hellohhhhhhhhhhhhhhhhhhhhhhhhhhh",
-            email: "hi@gmail.com",
-            job: "hhhwhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-          
-           
-          })
-          .then((res) => {
-            const body = res.body;
-            expect(body).to.contain.property('data');
-            expect(body).to.contain.property('message');
-            done();
-          })
-          .catch((err) => done(err))
-      })
-
-
-//send query
-      
-      it('send a query', (done) => {
-        chai.request(app).post('/api/queries')
-          .set({ 'token': token, Accept: 'application/json' })
-          .send({
-       
-            fullname: "hellohhhhhhhhhhhhhhhhhhhhhhhhhhh",
-            email: "hi@gmail.com",
-            message: "hhhwhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
-          
-           
-          })
-          .then((res) => {
-            const body = res.body;
-            expect(body).to.contain.property('success');
-            expect(body.success). 
-            expect(body).to.contain.property('message');
-            done();
-          })
-          .catch((err) => done(err))
-      })
-
-      //get all queries
-
-      it('it should GET  all queries', (done) => {
-        chai.request(app)
-        .get('/api/queries')
-        .end((err, res) => {
-              res.should.have.status(200);
-          done();
-        });
-      }) 
-
-      //get a specific query by id
-
-      it('it should GET one query by id', (done) => {
-        chai.request(app)
-        .get('/api/queries/61eaf368e62f06ffeaf45695')
-        .end((err, res) => {
-              res.should.have.status(200);
-          done();
-        });
-      }) 
-
-      //delete query
-
-      
-    //testing view all comments
-
-    it('it should GET all comments', (done) => {
-        chai.request(app)
-        .get('/api/articles/61ed7d6a130620cc47e63699/comments')
-        .end((err, res) => {
-              res.should.have.status(200);
-          done();
-        });
-      })
-
-      //testing get likes
-
-    it('it should GET all likes', (done) => {
-    chai.request(app)
-    .get('/api/articles/61ed7d6a130620cc47e63699/likes')
-    .end((err, res) => {
-            res.should.have.status(200);
-        done();
-    });
-    })
-
-
-
-
-
-
-
-
-
-
-  
-  })
-
-
-    //testing delete article
-
-    //testing search article
-
-    //testing add comment
-
-    //testing delete comment
-
-    //testing like article
-
-    
-    
-
-
-
-describe('2) Testing  users', () => {
-    it('get all users', (done) => {
-        chai.request(app)
-        .get('api/users')
-        .end((err, res) => {
+describe("Test one : Blogs", () => {
+    it("get all blogs", (done) => {
+        chai
+            .request(app)
+            .get("/api/articles")
+            .end((err, res) => {
                 res.should.have.status(200);
-            done();
-        });
-        })
+                res.should;
+                done();
+            });
+    });
+
+    it("get one blog", (done) => {
+        chai
+            .request(app)
+            .get("/api/articles/61f01da5bc46a47d61a1455f")
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            });
+    });
+
+    it("Create a post", (done) => {
+        chai
+            .request(app)
+            .post("/api/articles")
+            .set({
+                Accept: "application/json"
+            })
+            .send({
+                title: "Hello world hello world hello world hellow world hello world ",
+                hook: "Hello world hello world hello world hellow world hello world Hello world hello world hello world hellow world hello world",
+                content: "Hello world hello world hello world hellow world hello world Hello world hello world hello world hellow world hello world Hello world hello world hello world hellow world hello world",
+                banner: "Hello world hello world hello world hellow ",
+            })
+            .then((res) => {
+                const body = res.body;
+                expect(body).to.contain.property("data");
+                expect(body).to.contain.property("success");
+                done();
+            })
+            .catch((err) => done(err));
+    });
+
+    it("updating blog post", (done) => {
+        chai
+            .request(app)
+            .put("/api/articles/61f01da5bc46a47d61a1455f")
+            .set({
+                Accept: "application/json"
+            })
+            .send({
+                title: "Hello world hello world hello world hellow worlddd hello world ",
+                hook: "Hello world hello world hello world hellow world hello world Hello world hello world hello world hellow world hello world",
+                content: "Hello world hello world hellohh world hellow world hello world Hello world hello world hello world hellow world hello world Hello world hello world hello world hellow world hello world",
+                banner: "Hello world hello world hello worldddd hellow ",
+            })
+            .then((res) => {
+                const body = res.body;
+                expect(body).to.contain.property("success");
+                done();
+            })
+            .catch((err) => done(err));
+    });
+    it('Comment on an article.', (done) => {
+
+        chai.request(app).post('/api/articles/61f01da5bc46a47d61a1455f/comments')
+            .set({
+                Accept: 'application/json'
+            })
+            .send({
+
+                "message": "cool"
+            })
+            .then((res) => {
+                const body = res.body;
+                expect(body).to.contain.property('data');
+                expect(body).to.contain.property('success');
+                done();
+            })
+            .catch((err) => done(err))
+    })
+    it("Dleteing blog", (done) => {
+        chai
+            .request(app)
+            .delete("/api/articles/61f01da5bc46a47d61a1455f")
+            .set({
+                Accept: "application/json"                
+            })
+            .then((res) => {
+                const body = res.body;
+                res.should.have.status(200);
+                expect(body).to.contain.property("data");
+                expect(body.data).to.contain.property("message");
+                expect(body).to.contain.property("success");
+                done();
+            })
+            .catch((err) => done(err));
+    });
+});
+
+describe("Test two: Users", () => {
+    it("get all users", (done) => {
+        chai
+            .request(app)
+            .get("/api/users")
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            });
+    });
+
+    it("get one user", (done) => {
+        chai
+            .request(app)
+            .get("/api/users/61e3e9273fbefd9e3b52fd84")
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            });
+    });
+
+    it("Create a user", (done) => {
+        chai
+            .request(app)
+            .post("/api/users")
+            .set({
+                Accept: "application/json"
+            })
+            .send({
+                firstName: "Delyce",
+                secondName: "Twizeyimana",
+                email: "delyce@gmail.com",
+                password: "2356778999r44",
+            })
+            .then((res) => {
+                const body = res.body;
+                expect(body).to.contain.property("data");
+                expect(body.data).to.contain.property("message");
+                expect(body).to.contain.property("success");
+                done();
+            })
+            .catch((err) => done(err));
+    });
+
+    it("User logging in", (done) => {
+        chai
+            .request(app)
+            .post("/api/users/login")
+            .send({
+                "email": "delyccedd@gmail.com",
+                "password": "1234556789"
+
+            })
+            .then((res) => {
+                const body = res.body;
+                expect(body).to.have.property("token");
+                expect(body).to.contain.property("success");
+                expect(body).to.contain.property("data");
+
+                done();
+            })
+            .catch((err) => done(err));
+    });
+    it("Liking test", (done) => {
+        chai
+            .request(app)
+            .get("/api/users/61ed7d6a130620cc47e63699/likes")
+            .end((err, res) => {
+                res.should.have.status(404);
+                done();
+            });
+    });
+
+});
 
 
 
 
+describe("Test three: Queries", () => {
+    it("get all queries", (done) => {
+        chai
+            .request(app)
+            .get("/api/queries")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should;
+                done();
+            });
+    });
+
+
+    it("get one query", (done) => {
+        chai
+            .request(app)
+            .get("/api/queries/61f3708a0758494c8d725db9")
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should;
+                done();
+            });
+    });
+
+
+    it("Create a query", (done) => {
+        chai
+            .request(app)
+            .post("/api/users")
+            .set({
+                Accept: "application/json"
+            })
+            .send({
+                fullname: "Delyce",
+                email: "delyce@gmail.com",
+                message: "Hey Delye, would you would you would you would you would you",
+            })
+            .then((res) => {
+                const body = res.body;
+                expect(body).to.contain.property("data");
+                expect(body.data).to.contain.property("message");
+                expect(body).to.contain.property("success");
+                done();
+            })
+            .catch((err) => done(err));
+    });
 
 
 
 
-    
+})
+
+
+describe("Test Four: Hire me", () => {
+    it("Create a hire me message", (done) => {
+        chai
+            .request(app)
+            .post("/api/hireme")
+            .set({
+                Accept: "application/json"
+            })
+            .send({
+                name: "Delyce",
+                email: "delyce@gmail.com",
+                job: "Hey Delye, would you would you would you would you would you",
+            })
+            .then((res) => {
+                const body = res.body;
+                expect(body).to.contain.property("data");
+                expect(body).to.contain.property("success");
+                done();
+            })
+            .catch((err) => done(err));
+    });
+
+
+
+
+})

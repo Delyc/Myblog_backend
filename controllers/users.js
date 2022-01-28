@@ -1,27 +1,32 @@
-import pkg from "http-errors";
-const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
-import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
-
 import { User } from "../models/users.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken"
 
 // get one user by id
-export const getUserById = async (req, res) => {
+export const getUserById = async (req, res) => { 
   if (!req.params.id) {
     return res
       .status(404)
-      .json({ success: false, error: "Oops, missing user id" });
+      .json({ success: false, data: { message: "Oops, missing user id" } });
   }
 
   const id = req.params.id;
   const user = await User.findById(id);
 
   if (!user) {
-    return res
-      .status(404)
-      .json({ success: false, Data: "no user exists for this id" });
+    return res.status(404).json({
+      success: false,
+      data: {
+        message: "no user exists for this id",
+      },
+    });
   }
-  res.status(200).send(user);
+  res.status(200).json({
+    success: true,
+    data: {
+      data: user,
+    },
+  });
 };
 
 // create a new user
@@ -33,21 +38,28 @@ export const createUser = async (req, res) => {
   if (existingUser) {
     return res.status(409).json({
       success: false,
-      Data: "A user with this email already exist",
+      data: { message: "A user with this email already exist" },
     });
   }
 
   try {
-    const user = await User.create(req.body);
-    res
-      .status(201)
-      .json({ success: true, Data: "Account successfully created" });
+    // hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const Obj = new User({
+      firstName: req.body.firstName,
+      secondName: req.body.secondName,
+      email: req.body.email,
+      password: hashedPassword,
+    });
+    const user = await User.create(Obj);
+    res.status(201).json({ success: true, data :{message: "account successfully created"} });
   } catch (error) {
     console.log(error);
-    
+
     res.status(404).json({
       success: false,
-      message: error.properties,
+      data: { message: error.properties },
     });
   }
 };
@@ -55,33 +67,33 @@ export const createUser = async (req, res) => {
 // fetch all users
 export const getAllUsers = async (req, res) => {
   const users = await User.find();
-  res.status(200).send(users);
+  res.status(200).json({ success: true, data: users });
 };
 
 // update a user
 export const updateUser = async (req, res) => {
   const id = req.params.id;
   if (!id) {
-    return res.status(400).json({ Data: "Authentication failed" });
+    return res.status(400).json({ data: { message: "No such id exists" } });
   }
 
   const user = await User.findById(id);
 
   if (!user) {
-    return res.status(404).json({ Data: "not found" });
-    // throw new NotFound("no user exist for this id");
+    return res.status(400).json({
+      success: false,
+      data: { message: "No user with this id exists" },
+    });
   }
 
   const updatedUser = await User.findByIdAndUpdate(id, req.body, {
     new: true,
   });
 
-  return res
-    .status(200)
-    .json({
-      success: true,
-      Data: "you have successfully updated your information",
-    });
+  return res.status(200).json({
+    success: true,
+    data: { message: "User updated successfully" },
+  });
 };
 
 // delete a user
@@ -91,14 +103,17 @@ export const deleteUser = async (req, res) => {
   const user = await User.findById(id);
 
   if (!user) {
-    return res.status(404).json({ Data: "not found" });
+    return res.status(400).json({
+      success: false,
+      data: { message: "No user with this id exists" },
+    });
   }
 
   await User.findByIdAndDelete(id);
 
   res.status(200).json({
     success: true,
-    Data: "user deleted",
+    data: { message: "User deleted successfully" },
   });
 };
 
@@ -110,19 +125,19 @@ export const loginUser = async (req, res) => {
   const user = await User.findOne({ email: email });
 
   if (!user) {
-    return res.status(401).json({
+    return res.status(400).json({
       success: false,
-      message: "Wrong email",
+      data: { message: "No user with this email exists" },
     });
   }
 
-  if (user.password !== password) {
-    return res.status(401).json({
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({
       success: false,
-      message: "Wrong password",
+      data: { message: "Incorrect password" },
     });
   }
-
 
   // generating token
   let authToken = jwt.sign(
@@ -131,16 +146,10 @@ export const loginUser = async (req, res) => {
     { expiresIn: "1h" }
   );
 
-  const sendBack = {
-    'firstName' : user.firstName,
-    'secondName' : user.secondName,
-    'email' : user.email
-  }
-
   // send json response
   res.status(200).json({
     success: true,
-    data: sendBack, 
+    data: {message: "successfully logged in"},
     token: authToken,
   });
 };
@@ -157,17 +166,17 @@ export const searchUser = async (req, res) => {
     if (users.length === 0) {
       res.status(404).json({
         success: false,
-        message: "no user found",
+        data: { message: "No user with this firstName exists" },
       });
     }
     res.status(200).json({
       success: true,
-      data: user.firstName,
+      data: users,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message,
+      data: { message: "Something went wrong ..." },
     });
   }
 };

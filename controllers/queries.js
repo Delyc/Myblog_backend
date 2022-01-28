@@ -1,22 +1,22 @@
-import pkg from "http-errors";
-const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
-
 import { Queries } from "../models/queries.js";
 
 // create a query
 export const CreateQuery = async (req, res) => {
   // check if message is empty
-  if (!req.body) {
-    
-    return res.status(500).json({
+  if (!req.body.message) {
+    return res.status(400).json({
       success: false,
-      message: "fill all fields",
+      message: "Missing message",
     });
-    // throw new BadRequest("Missing message");
   }
   try {
     const query = await Queries.create(req.body);
-    res.status(201).json({ success: true, message: "Received, I will get back to you soon!" });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Received, I will get back to you soon!",
+      });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -32,17 +32,21 @@ export const DeleteQuery = async (req, res) => {
   const query = await Queries.findById(id.toString());
 
   if (!query) {
-    
-    return res.status(500).json({
+    return res.status(400).json({
       success: false,
-      message: "Not found!",
+      message: "No query found",
     });
-    // throw new NotFound("No query found");
   }
 
   try {
     await Queries.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: "Query deleted" });
+    res.status(200).json({
+      success: true,
+      data: {
+        message: "Query deleted",
+        queryId: req.params.id,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -76,9 +80,13 @@ export const getQueryById = async (req, res) => {
       message: "not found",
     });
   }
-  res.status(200).send(query);
+  res.status(200).json({
+    success: true,
+    data: {
+      data: query,
+    },
+  });
 };
-
 
 // search queries
 export const SearchQueries = async (req, res) => {

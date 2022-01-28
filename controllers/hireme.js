@@ -12,12 +12,12 @@ export const hireMe = async (req, res) => {
   }
   try {
     const query = await hire.create(req.body);
-    res.status(201).json({ success: true, message: "Thanks for contacting me" });
+    res.status(201).json({ success: true, data:{message: "Thanks for contacting me" } });
   } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "check if all fields are filled",
+      data:{message: "check if all fields are filled"},
     });
   }
 };

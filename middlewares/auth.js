@@ -13,7 +13,6 @@ export function authenticate(req, res, next) {
 
     jwt.verify(token, process.env.AUTH_KEY, (err, decoded) => {
       if (err) {
-        console.log(err);
         return res.status(401).json({
           message: "invalid or expire token",
         });
