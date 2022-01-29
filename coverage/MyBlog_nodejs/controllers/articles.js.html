@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.7% </span>
+                <span class="strong">42.01% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>123/288</span>
+                <span class='fraction'>121/288</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.84% </span>
+                <span class="strong">58.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/13</span>
+                <span class='fraction'>7/12</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">42.7% </span>
+                <span class="strong">42.01% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>123/288</span>
+                <span class='fraction'>121/288</span>
             </div>
         
             
@@ -436,6 +436,17 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -462,17 +473,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -499,20 +499,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -532,6 +518,20 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -723,25 +723,25 @@ export const updateArticle = async (req, res) =&gt; {
   const id = req.params.id;
   const article = await Article.findById(id);
 &nbsp;
-  if (!article) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    return res.status(400).json({</span>
-<span class="cstat-no" title="statement not covered" >      success: false,</span>
-<span class="cstat-no" title="statement not covered" >      data: {</span>
-<span class="cstat-no" title="statement not covered" >        message: "No article found",</span>
-<span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-&nbsp;
-  const updatedArticle = await Article.findByIdAndUpdate(id, req.body, {
-    new: true,
-  });
-&nbsp;
-  return res.status(200).json({
-    success: true,
-    data: {
-      message: "Article successfully updated",
-    },
-  });
+  if (!article) {
+    return res.status(400).json({
+      success: false,
+      data: {
+        message: "No article found",
+      },
+    });
+  }
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >  const updatedArticle = await Article.findByIdAndUpdate(id, req.body, {</span>
+<span class="cstat-no" title="statement not covered" >    new: true,</span>
+<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  return res.status(200).json({</span>
+<span class="cstat-no" title="statement not covered" >    success: true,</span>
+<span class="cstat-no" title="statement not covered" >    data: {</span>
+<span class="cstat-no" title="statement not covered" >      message: "Article successfully updated",</span>
+<span class="cstat-no" title="statement not covered" >    },</span>
+<span class="cstat-no" title="statement not covered" >  });</span>
 };
 &nbsp;
 // delete an article
@@ -749,14 +749,14 @@ export const deleteArticle = async (req, res) =&gt; {
   const id = req.params.id;
   const article = await Article.findById(id);
 &nbsp;
-  if (!article) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    return res.status(400).json({</span>
-<span class="cstat-no" title="statement not covered" >      success: false,</span>
-<span class="cstat-no" title="statement not covered" >      data: {</span>
-<span class="cstat-no" title="statement not covered" >        message: "No article found",</span>
-<span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
+  if (!article) {
+    return res.status(400).json({
+      success: false,
+      data: {
+        message: "No article found",
+      },
+    });
+  }
 &nbsp;
   await Article.findByIdAndDelete(id);
   return res.status(200).json({
@@ -800,26 +800,26 @@ export const addComment = async (req, res) =&gt; {
   const id = req.params.id;
   const article = await Article.findById(id);
 &nbsp;
-  if (!article) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
-<span class="cstat-no" title="statement not covered" >    return res.status(400).json({</span>
-<span class="cstat-no" title="statement not covered" >      success: false,</span>
-<span class="cstat-no" title="statement not covered" >      data: {</span>
-<span class="cstat-no" title="statement not covered" >        message: "No article found",</span>
-<span class="cstat-no" title="statement not covered" >      },</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-&nbsp;
-  const updatedArticle = await Article.findByIdAndUpdate(id, {
-    $push: { comments: req.body },
-  });
-&nbsp;
-  res.status(200).json({
-    success: true,
-    data: {
-      message: "comment added successfully",
-      commentUserId: req.body.userId,
-    },
-  });
+  if (!article) {
+    return res.status(400).json({
+      success: false,
+      data: {
+        message: "No article found",
+      },
+    });
+  }
+<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
+<span class="cstat-no" title="statement not covered" >  const updatedArticle = await Article.findByIdAndUpdate(id, {</span>
+<span class="cstat-no" title="statement not covered" >    $push: { comments: req.body },</span>
+<span class="cstat-no" title="statement not covered" >  });</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >  res.status(200).json({</span>
+<span class="cstat-no" title="statement not covered" >    success: true,</span>
+<span class="cstat-no" title="statement not covered" >    data: {</span>
+<span class="cstat-no" title="statement not covered" >      message: "comment added successfully",</span>
+<span class="cstat-no" title="statement not covered" >      commentUserId: req.body.userId,</span>
+<span class="cstat-no" title="statement not covered" >    },</span>
+<span class="cstat-no" title="statement not covered" >  });</span>
 };
 &nbsp;
 // delete comment of an article using user id in the comment object
@@ -934,7 +934,7 @@ export const getLikes = <span class="fstat-no" title="function not covered" >asy
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri Jan 28 2022 18:32:43 GMT+0200 (Eastern European Standard Time)
+                at Sat Jan 29 2022 00:27:29 GMT+0200 (Eastern European Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -22,7 +22,7 @@ describe("Test one : Blogs", () => {
     it("get one blog", (done) => {
         chai
             .request(app)
-            .get("/api/articles/61f01da5bc46a47d61a1455f")
+            .get("/api/articles/61f2c23822940726e20c43ff")
             .end((err, res) => {
                 res.should.have.status(200);
                 done();
@@ -92,7 +92,7 @@ describe("Test one : Blogs", () => {
     it("Dleteing blog", (done) => {
         chai
             .request(app)
-            .delete("/api/articles/61f01da5bc46a47d61a1455f")
+            .delete("/api/articles/61f2c23822940726e20c43ff")
             .set({
                 Accept: "application/json"                
             })
