@@ -1,4 +1,5 @@
 import { Queries } from "../models/queries.js";
+import nodemailer from 'nodemailer';
 
 // create a query
 export const CreateQuery = async (req, res) => {
@@ -11,12 +12,39 @@ export const CreateQuery = async (req, res) => {
   }
   try {
     const query = await Queries.create(req.body);
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Received, I will get back to you soon!",
-      });
+
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD,
+        clientId: process.env.OAUTH_CLIENTID,
+        clientSecret: process.env.OAUTH_CLIENT_SECRET,
+        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+      },
+    });
+
+    let mailOptions = {
+      from: `${req.body.fullname}`  ,
+      to: process.env.MAIL_USERNAME,
+      subject: `Query`,
+      text:`${req.body.Email} 
+      ${req.body.message}`
+    };
+
+    transporter.sendMail(mailOptions, function (err, data) {
+      if (err) {
+        console.log("Error " + err);
+      } else {
+        console.log("Email sent successfully");
+      }
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Received, I will get back to you soon!",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({

@@ -7,7 +7,7 @@ const QueriesSchema = new mongoose.Schema(
     
       required: true,
     },
-    email: {
+    Email: {
       type: String,
       
       required: true,
