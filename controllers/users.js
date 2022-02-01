@@ -149,7 +149,8 @@ export const loginUser = async (req, res) => {
   // send json response
   res.status(200).json({
     success: true,
-    data: {message: "successfully logged in"},
+    data: {message: "successfully logged in",
+          email: req.body.email},
     token: authToken,
   });
 };
