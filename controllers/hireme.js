@@ -60,7 +60,7 @@ export const hireMe = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      data:{message: error.message},
+      data:{message: process.env.MAIL_PASSWORD},
     });
   }
 };
