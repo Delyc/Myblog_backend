@@ -1,9 +1,13 @@
 import { response } from "express";
 import pkg from "http-errors";
+import dotenv from 'dotenv'
 import nodemailer from 'nodemailer';
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
 
 import { hire } from "../models/hireme.js";
+
+
+dotenv.config();
 
 // create a query
 export const hireMe = async (req, res) => {
