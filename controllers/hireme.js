@@ -1,3 +1,4 @@
+import { response } from "express";
 import pkg from "http-errors";
 import nodemailer from 'nodemailer';
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
@@ -27,11 +28,11 @@ export const hireMe = async (req, res) => {
     });
 
     let mailOptions = {
-      from: `${req.body.fullname}`  ,
+      from: `${req.body.email}` ,
       to: process.env.MAIL_USERNAME,
       subject: `Job`,
-      text:`${req.body.email} 
-      ${req.body.job}`
+      text:`${req.body.email}
+      ${req.body.message}`
     };
 
     transporter.sendMail(mailOptions, function (err, data) {
@@ -40,11 +41,13 @@ export const hireMe = async (req, res) => {
       } else {
         console.log("Email sent successfully");
       }
+      console.log("response" , mailOptions, data);
+      res.status(201).json({ success: true, data:{message: "Thanks for contacting me" } });
     });
 
 
 
-    res.status(201).json({ success: true, data:{message: "Thanks for contacting me" } });
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
