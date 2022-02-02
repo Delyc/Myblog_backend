@@ -40,7 +40,7 @@ export const hireMe = async (req, res) => {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: `${req.body.name} <delyce2002@gmail.com>`, // sender address
-    to: "delyce2002gmail@.com", // list of receivers
+    to: "d.twizeyima@alustudent.com", // list of receivers
     subject: "Job", // Subject line
     text: req.body.email, // plain text body
     html: `${req.body.email} <br> ${req.body.message}`
