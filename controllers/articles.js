@@ -4,6 +4,7 @@ const Mongoose = mongoose;
 const { BadRequest, Conflict, NotFound, Unauthorized } = pkg;
 
 import { Article } from "../models/article.js";
+import { Comment } from "../models/article.js";
 
 // get one article by id
 export const getArticleById = async (req, res) => {
@@ -28,10 +29,13 @@ export const getArticleById = async (req, res) => {
       },
     });
   }
+  let comments = await article.getComments();
+
   res.status(200).json({
     success: true,
     data: {
       data: article,
+      comments: comments,
     },
   });
 };
@@ -43,7 +47,7 @@ export const createArticle = async (req, res) => {
   const existingArticle = await Article.findOne({ title: title });
 
   if (existingArticle) {
-    return res.status(400).json({
+    return res.status(409).json({
       success: false,
       data: {
         message: "A article with this title already exist",
@@ -54,7 +58,30 @@ export const createArticle = async (req, res) => {
   // create article using req.body
   try {
     const article = await Article.create(req.body);
-    res.status(201).json({ success: true, data: { message: "Article created successfully"} });
+    res.status(201).json({
+      success: true,
+      data: { message: "Article created successfully" },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      data: {
+        message: "Something is wrong...",
+      },
+    });
+  }
+};
+//creating comment
+export const createComment = async (req, res) => {
+  try {
+    let commentData = req.body;
+    commentData["post"] = req.params.id;
+    const comment = await Comment.create(commentData);
+    res.status(201).json({
+      success: true,
+      data: { message: "comment created successfully", comment },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -128,26 +155,31 @@ export const deleteArticle = async (req, res) => {
 
 // search for a article using title
 export const searchArticle = async (req, res) => {
-  const search = req.params.search;
+  const search = req.query.search;
+  if (!search) {
+    return res.status(404).json({ message: "Not found" });
+  }
   try {
     // find all users with firstName that contains search - case insensitive
     const articles = await Article.find({
       title: { $regex: search, $options: "i" },
     });
     // const users = await User.find({ firstName: search });
-    if (articles.length === 0) {
-      return res.status(404).json({
-        success: false,
-        data: {
-          message: "No article found",
-        },
-      });
-    }
+    // if (articles.length === 0) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     data: {
+    //       message: "No article found",
+    //     },
+    //   });
+    // }
     return res.status(200).json({
       success: true,
       data: articles,
     });
   } catch (error) {
+    console.log(error);
+
     return res.status(500).json({
       success: false,
       message: error.message,
@@ -155,31 +187,31 @@ export const searchArticle = async (req, res) => {
   }
 };
 // add comment to an article
-export const addComment = async (req, res) => {
-  const id = req.params.id;
-  const article = await Article.findById(id);
+// export const addComment = async (req, res) => {
+//   const id = req.params.id;
+//   const article = await Article.findById(id);
 
-  if (!article) {
-    return res.status(400).json({
-      success: false,
-      data: {
-        message: "No article found",
-      },
-    });
-  }
+//   if (!article) {
+//     return res.status(400).json({
+//       success: false,
+//       data: {
+//         message: "No article found",
+//       },
+//     });
+//   }
 
-  const updatedArticle = await Article.findByIdAndUpdate(id, {
-    $push: { comments: req.body },
-  });
+//   const updatedArticle = await Article.findByIdAndUpdate(id, {
+//     $push: { comments: req.body },
+//   });
 
-  res.status(200).json({
-    success: true,
-    data: {
-      message: "comment added successfully",
-      commentUserId: req.body.userId,
-    },
-  });
-};
+//   res.status(200).json({
+//     success: true,
+//     data: {
+//       message: "comment added successfully",
+//       commentUserId: req.body.userId,
+//     },
+//   });
+// };
 
 // delete comment of an article using user id in the comment object
 export const deleteComment = async (req, res) => {
@@ -236,9 +268,9 @@ export const getComments = async (req, res) => {
 // like an article, if user liked the article, unlike it otherwise like it
 export const likeArticle = async (req, res) => {
   const id = req.params.id;
-  const article = await Article.find({_id : id});
+  const article = await Article.find({ _id: id });
 
-  if (article.length === 0 ) {
+  if (article.length === 0) {
     return res.status(404).json({
       success: false,
       data: {
@@ -246,7 +278,7 @@ export const likeArticle = async (req, res) => {
       },
     });
   }
-  
+
   const user = req.body.user;
   const userLiked = article.likes.find((like) => like.user === user);
 

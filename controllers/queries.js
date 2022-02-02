@@ -1,6 +1,15 @@
 import { Queries } from "../models/queries.js";
+import dotenv from 'dotenv'
 import nodemailer from 'nodemailer';
 
+
+
+
+// import { Queries} from "../models/queries.js";
+
+
+
+dotenv.config();
 // create a query
 export const CreateQuery = async (req, res) => {
   // check if message is empty
@@ -12,39 +21,30 @@ export const CreateQuery = async (req, res) => {
   }
   try {
     const query = await Queries.create(req.body);
-
     let transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // true for 465, false for other ports
       auth: {
-        type: "OAuth2",
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
-        clientId: process.env.OAUTH_CLIENTID,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+        user: "delyce2002@gmail.com", // generated ethereal user
+        pass: process.env.MAIL_PASSWORD, // generated ethereal password
       },
     });
-
-    let mailOptions = {
-      from: `${req.body.fullname}`  ,
-      to: process.env.MAIL_USERNAME,
-      subject: `Query`,
-      text:`${req.body.Email} 
-      ${req.body.message}`
-    };
-
-    transporter.sendMail(mailOptions, function (err, data) {
-      if (err) {
-        console.log("Error " + err);
-      } else {
-        console.log("Email sent successfully");
-      }
+  
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: `${req.body.name} <delyce2002@gmail.com>`, // sender address
+      to: "d.twizeyima@alustudent.com", // list of receivers
+      subject: "Query", // Subject line
+      text: req.body.email, // plain text body
+      html: `${req.body.email} <br> ${req.body.message}`
+      
     });
-
-    res.status(201).json({
-      success: true,
-      message: "Received, I will get back to you soon!",
-    });
+  
+  
+  
+    res.status(201).json({ success: true, data:{message: "Thanks for contacting me" } });
+  
   } catch (error) {
     console.log(error);
     res.status(500).json({

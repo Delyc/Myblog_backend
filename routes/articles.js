@@ -9,18 +9,18 @@ import {
   updateArticle,
   deleteArticle,
   searchArticle,
-  addComment,
+  createComment,
   deleteComment,
   getComments,
   likeArticle,
   getLikes,
 } from "../controllers/articles.js";
 
-/** 
+/**
  * @openapi
  * tags:
  *  name: Posts
-*/
+ */
 
 /**
  * @openapi
@@ -49,6 +49,8 @@ import {
  */
 
 articleRouter.post("/", createArticle);
+
+articleRouter.get("/search", searchArticle);
 
 /**
  * @openapi
@@ -85,6 +87,7 @@ articleRouter.get("/:id", getArticleById);
  *        description: A list of all posts.
  */
 articleRouter.get("/", viewAllArticles);
+articleRouter.post("/:id/", createComment);
 
 /**
  * @openapi
@@ -105,7 +108,6 @@ articleRouter.get("/", viewAllArticles);
  *      404:
  *        description:  article doesnot exist
  */
-
 
 articleRouter.put("/:id", updateArticle);
 
@@ -128,17 +130,11 @@ articleRouter.put("/:id", updateArticle);
 articleRouter.delete("/:id", deleteArticle);
 
 
-articleRouter.get("/search/:search", searchArticle);
-
-
-articleRouter.post("/:id/comments", addComment);
-
+// articleRouter.post("/:id/comments", addComment);
 
 articleRouter.delete("/:id/comments/:user", authenticate, deleteComment);
 articleRouter.get("/:id/comments", getComments);
 articleRouter.post("/:id/likes", likeArticle);
 articleRouter.get("/:id/likes", getLikes);
-
-
 
 export default articleRouter;
