@@ -40,7 +40,7 @@ export const hireMe = async (req, res) => {
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: `${req.body.name} <delyce2002@gmail.com>`, // sender address
-    to: "d.twizeyima@alustudent.com", // list of receivers
+    to: "delyce2002gmail@.com", // list of receivers
     subject: "Job", // Subject line
     text: req.body.email, // plain text body
     html: `${req.body.email} <br> ${req.body.message}`
@@ -48,13 +48,6 @@ export const hireMe = async (req, res) => {
   });
 
 
-  transporter.verify(function(error, success) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log("Server is ready to take our messages");
-    }
-});
 
 
   res.status(201).json({ success: true, data:{message: "Thanks for contacting me" } });
