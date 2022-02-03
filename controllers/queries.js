@@ -47,7 +47,7 @@ export const CreateQuery = async (req, res) => {
     to: "d.twizeyima@alustudent.com", // list of receivers
     subject: "Query", // Subject line
     text: req.body.email, // plain text body
-    html: `${req.body.email} <br> ${req.body.fullname} <br> ${req.body.message}`
+    html: `${req.body.email} <br> ${req.body.fullname}<br> ${req.body.message}`
     
   });
 

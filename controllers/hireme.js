@@ -11,7 +11,7 @@ dotenv.config();
 
 // create a query
 export const hireMe = async (req, res) => {
-  // check if message is empty
+  console.log(req.body);
   if (!req.body.message) {
     
     // throw new BadRequest("Missing message");
@@ -37,16 +37,20 @@ export const hireMe = async (req, res) => {
     },
   });
 
-  // send mail with defined transport object
+
   let info = await transporter.sendMail({
     from: `${req.body.name} <delyce2002@gmail.com>`, // sender address
     to: "d.twizeyima@alustudent.com", // list of receivers
-    subject: "Job", // Subject line
+    subject: "contactme", // Subject line
     text: req.body.email, // plain text body
     html: `${req.body.email} <br> ${req.body.name} <br> ${req.body.message}`
     
   });
 
+  
+
+  // send mail with defined transport object
+ 
 
 
 
