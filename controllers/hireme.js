@@ -43,7 +43,7 @@ export const hireMe = async (req, res) => {
     to: "d.twizeyima@alustudent.com", // list of receivers
     subject: "Job", // Subject line
     text: req.body.email, // plain text body
-    html: `${req.body.email} <br> ${req.body.message}`
+    html: `${req.body.email} <br> ${req.body.name} <br> ${req.body.message}`
     
   });
 

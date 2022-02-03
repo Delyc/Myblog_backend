@@ -1,11 +1,12 @@
 import { Queries } from "../models/queries.js";
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer';
+import pkg from "http-errors";
 
 
 
 
-// import { Queries} from "../models/queries.js";
+
 
 
 
@@ -21,29 +22,42 @@ export const CreateQuery = async (req, res) => {
   }
   try {
     const query = await Queries.create(req.body);
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: "delyce2002@gmail.com", // generated ethereal user
-        pass: process.env.MAIL_PASSWORD, // generated ethereal password
-      },
-    });
-  
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-      from: `${req.body.name} <delyce2002@gmail.com>`, // sender address
-      to: "d.twizeyima@alustudent.com", // list of receivers
-      subject: "Query", // Subject line
-      text: req.body.email, // plain text body
-      html: `${req.body.email} <br> ${req.body.message}`
-      
-    });
-  
-  
-  
-    res.status(201).json({ success: true, data:{message: "Thanks for contacting me" } });
+    
+
+
+
+
+    
+ 
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 587,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "delycetwizeyimana@gmail.com", // generated ethereal user
+      pass: process.env.MAIL_PASSWORD, // generated ethereal password
+    },
+  });
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: `${req.body.fullname}`, // sender address
+    to: "d.twizeyima@alustudent.com", // list of receivers
+    subject: "Query", // Subject line
+    text: req.body.email, // plain text body
+    html: `${req.body.email} <br> ${req.body.fullname} <br> ${req.body.message}`
+    
+  });
+
+
+
+
+  res.status(201).json({ success: true, data:{message: "Thanks for contacting me" } });
+
+
+
   
   } catch (error) {
     console.log(error);
