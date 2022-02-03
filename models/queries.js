@@ -14,7 +14,7 @@ const QueriesSchema = new mongoose.Schema(
     },
     message: {
       type: String,
-      minlength: 10,
+      
       required: true,
     },
   },

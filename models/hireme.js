@@ -16,7 +16,7 @@ const HireSchema = new mongoose.Schema(
     message: {
       type: String,
       required: true,
-      minlength: 50,
+    
     },
 
   },
