@@ -69,3 +69,12 @@ export const hireMe = async (req, res) => {
     });
   }
 };
+
+
+
+
+
+// async function sayHello(){
+//   return await Promise.resolve("Hello")
+// }
+// sayHello().then(alert)
