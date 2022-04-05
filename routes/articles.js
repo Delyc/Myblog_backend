@@ -15,6 +15,7 @@ import {
   likeArticle,
   getLikes,
 } from "../controllers/articles.js";
+import { handlePostImageUpload, upload, uploadMiddleware } from "../middlewares/upload.js";
 
 /**
  * @openapi
@@ -48,7 +49,8 @@ import {
  *
  */
 
-articleRouter.post("/", createArticle);
+articleRouter.post("/upload", upload.single("image"), handlePostImageUpload);
+articleRouter.post("/",upload.single("image"), uploadMiddleware, createArticle);
 
 articleRouter.get("/search", searchArticle);
 

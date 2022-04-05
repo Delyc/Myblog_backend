@@ -1,14 +1,7 @@
 import { Queries } from "../models/queries.js";
-import dotenv from 'dotenv'
-import nodemailer from 'nodemailer';
+import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 import pkg from "http-errors";
-
-
-
-
-
-
-
 
 dotenv.config();
 // create a query
@@ -21,16 +14,10 @@ export const CreateQuery = async (req, res) => {
     });
   }
   try {
+    console.log(req.body);
     const query = await Queries.create(req.body);
-    
 
-
-
-
-    
- 
-
-  // create reusable transporter object using the default SMTP transport
+    // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
@@ -41,16 +28,20 @@ export const CreateQuery = async (req, res) => {
     },
   });
 
-  // send mail with defined transport object
+
   let info = await transporter.sendMail({
-    from: `${req.body.fullname}`, // sender address
+    from: `${req.body.name} <delyce2002@gmail.com>`, // sender address
     to: "d.twizeyima@alustudent.com", // list of receivers
-    subject: "Query", // Subject line
+    subject: "contactme", // Subject line
     text: req.body.email, // plain text body
-    html: `${req.body.email} <br> ${req.body.fullname}<br> ${req.body.message}`
+    html: `${req.body.email} <br> ${req.body.name} <br> ${req.body.message}`
     
   });
 
+  
+
+  // send mail with defined transport object
+ 
 
 
 
@@ -58,12 +49,13 @@ export const CreateQuery = async (req, res) => {
 
 
 
-  
+
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Fill all fields correctly!",
+      message: error.message,
     });
   }
 };

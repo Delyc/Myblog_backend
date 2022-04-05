@@ -57,7 +57,10 @@ export const createArticle = async (req, res) => {
 
   // create article using req.body
   try {
-    const article = await Article.create(req.body);
+    let article = req.body;
+    article["url"] = req?.file?.path || ""
+    console.log(req.body)
+    const art = await Article.create(article);
     res.status(201).json({
       success: true,
       data: { message: "Article created successfully" },

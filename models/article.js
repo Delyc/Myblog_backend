@@ -35,16 +35,18 @@ const ArticleSchema = new mongoose.Schema(
     hook: {
       type: String,
       required: true,
-      minlength: 20,
+      minlength: 10,
     },
     content: {
       type: String,
       required: true,
-      minlength: 50,
+      minlength: 10,
     },
     banner: {
       type: String,
-      required: [true, "banner required"],
+    },
+    url: {
+      type: String,
     },
 
     likes: {
@@ -54,22 +56,21 @@ const ArticleSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 ArticleSchema.index({ title: "text" });
-ArticleSchema.methods.getComments = async function ()  {
+ArticleSchema.methods.getComments = async function () {
   let post = this;
   const comments = await Comment.find({ post: post._id });
-  return comments
+  return comments;
 };
 
-ArticleSchema.methods.addComment = async function (data){
+ArticleSchema.methods.addComment = async function (data) {
   let post = this;
-  data['post']= post._id;
+  data["post"] = post._id;
   try {
-    let newComment = await Comment.create(data)
-    return newComment
+    let newComment = await Comment.create(data);
+    return newComment;
   } catch (error) {
-    return error
+    return error;
   }
- 
-}
+};
 
 export const Article = mongoose.model("Articles", ArticleSchema);

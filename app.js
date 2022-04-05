@@ -25,13 +25,14 @@ import queryRouter from "./routes/queries.js";
 import hireRouter from "./routes/hireme.js"
 import { swaggeroptions } from "./config/base.js";
 import swaggerJSDoc from "swagger-jsdoc";
+import { cloudinaryConfig } from "./middlewares/upload.js";
 const swaggerOptionsUi = swaggerJSDoc(swaggeroptions);
 app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerOptionsUi));
 
 app.get("/", (req, res) => {
   res.send("Welcome!");
 });
-
+app.use(cloudinaryConfig)
 app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/queries", queryRouter);
