@@ -42,9 +42,6 @@ const ArticleSchema = new mongoose.Schema(
       required: true,
       minlength: 10,
     },
-    banner: {
-      type: String,
-    },
     url: {
       type: String,
     },

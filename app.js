@@ -1,53 +1,48 @@
-import express from "express";
 import bodyParser from "body-parser";
-import dotenv from "dotenv";
 import cors from "cors";
+import "dotenv/config";
+import express from "express";
 import mongoose from "mongoose";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import { swaggeroptions } from "./config/base.js";
+import { cloudinaryConfig } from "./middlewares/upload.js";
+import articleRouter from "./routes/articles.js";
+import hireRouter from "./routes/hireme.js";
+import queryRouter from "./routes/queries.js";
+import userRouter from "./routes/users.js";
 
+const port = process.env.PORT || "3001";
+const swaggerOptionsUi = swaggerJSDoc(swaggeroptions);
 const app = express();
 
 app.use(cors());
-dotenv.config();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cloudinaryConfig);
 
-// app.use(function(err, req, res, next){
-//   res.status(422).send({error: err.message});
-// })
-// app.use(router);
-
-const port = process.env.PORT || "3001";
-import swaggerUi from "swagger-ui-express";
-import userRouter from "./routes/users.js";
-import articleRouter from "./routes/articles.js";
-import queryRouter from "./routes/queries.js";
-import hireRouter from "./routes/hireme.js"
-import { swaggeroptions } from "./config/base.js";
-import swaggerJSDoc from "swagger-jsdoc";
-import { cloudinaryConfig } from "./middlewares/upload.js";
-const swaggerOptionsUi = swaggerJSDoc(swaggeroptions);
 app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerOptionsUi));
 
 app.get("/", (req, res) => {
   res.send("Welcome!");
 });
-app.use(cloudinaryConfig)
+
 app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/queries", queryRouter);
 app.use("/api/hireme", hireRouter);
 
-app.all("*", (req, res)=>{
-  return res.sendStatus(404)
-})
+app.all("*", (req, res) => {
+  return res.sendStatus(404);
+});
 app.listen(port, () => {
   console.log(`API Running on Port ${port}`);
 });
 
 try {
   console.log("Connecting to MongoDB Atlas cluster...");
-  await mongoose.connect(process.env.MONGOURL, {
+  mongoose.connect(process.env.MONGOURL, {
     useUnifiedTopology: true,
     socketTimeoutMS: 75000,
   });

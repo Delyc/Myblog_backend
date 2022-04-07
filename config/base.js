@@ -1,26 +1,21 @@
-
-
 export const swaggeroptions = {
-    definition: {
-        openapi: "3.0.0",
-        info: {
-            title: "Delyce Project",
-            version: "1.0.0",
-            description: "the docs",
-
-        },
-        servers: [
-            {
-                url: "http://localhost:5000",
-                name: "Localhost"
-            },
-        {
-            url: "https://portifolio-website.herokuapp.com/",
-            name: "herokuapp"
-        }
-        ]
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Delyce Project",
+      version: "1.0.0",
+      description: "the docs",
     },
-    apis: [
-        "routes/*.js"
-    ]
-}
+    servers: [
+      {
+        url: process.env.BASE_URL || "http://localhost:5000",
+        name: "SERVER",
+      },
+      {
+        url: "https://portifolio-website.herokuapp.com/",
+        name: "herokuapp",
+      },
+    ],
+  },
+  apis: ["routes/*.js"],
+};

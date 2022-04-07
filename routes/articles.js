@@ -1,21 +1,28 @@
 import express from "express";
-const articleRouter = express.Router();
-import { authenticate } from "../middlewares/auth.js";
-
 import {
   createArticle,
-  getArticleById,
-  viewAllArticles,
-  updateArticle,
-  deleteArticle,
-  searchArticle,
   createComment,
+  deleteArticle,
   deleteComment,
+  getArticleById,
   getComments,
-  likeArticle,
   getLikes,
+  likeArticle,
+  searchArticle,
+  updateArticle,
+  viewAllArticles,
 } from "../controllers/articles.js";
-import { handlePostImageUpload, upload, uploadMiddleware } from "../middlewares/upload.js";
+import { authenticate } from "../middlewares/auth.js";
+import {
+  handlePostImageUpload,
+  upload,
+  uploadMiddleware,
+} from "../middlewares/upload.js";
+import {
+  articleValidatio,
+  validate,
+} from "../validations/articleValidation.js";
+const articleRouter = express.Router();
 
 /**
  * @openapi
@@ -50,7 +57,15 @@ import { handlePostImageUpload, upload, uploadMiddleware } from "../middlewares/
  */
 
 articleRouter.post("/upload", upload.single("image"), handlePostImageUpload);
-articleRouter.post("/",upload.single("image"), uploadMiddleware, createArticle);
+articleRouter.post(
+  "/",
+  upload.single("image"),
+  articleValidatio(),
+  validate,
+
+  uploadMiddleware,
+  createArticle
+);
 
 articleRouter.get("/search", searchArticle);
 
@@ -130,7 +145,6 @@ articleRouter.put("/:id", updateArticle);
  *        description: article deleted
  */
 articleRouter.delete("/:id", deleteArticle);
-
 
 // articleRouter.post("/:id/comments", addComment);
 
