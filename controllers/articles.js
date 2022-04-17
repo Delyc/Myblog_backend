@@ -197,8 +197,8 @@ export const searchArticle = async (req, res) => {
 //   if (!article) {
 //     return res.status(400).json({
 //       success: false,
-//       data: {
 //         message: "No article found",
+// .      data: {
 //       },
 //     });
 //   }
