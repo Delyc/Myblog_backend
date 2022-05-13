@@ -11,6 +11,7 @@ import articleRouter from "./routes/articles.js";
 import hireRouter from "./routes/hireme.js";
 import queryRouter from "./routes/queries.js";
 import userRouter from "./routes/users.js";
+import projectRouter from "./routes/projects.js";
 
 const port = process.env.PORT || "3001";
 const swaggerOptionsUi = swaggerJSDoc(swaggeroptions);
@@ -32,6 +33,7 @@ app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/queries", queryRouter);
 app.use("/api/hireme", hireRouter);
+app.use("/api/projects", projectRouter);
 
 app.all("*", (req, res) => {
   return res.sendStatus(404);
